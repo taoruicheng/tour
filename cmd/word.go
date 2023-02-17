@@ -14,7 +14,7 @@ const (
 	ModeUnderscoreToUpperCamelCase            // 下划线转大写驼峰
 )
 
-var desc = strings.Join([]string{
+var wordCmddesc = strings.Join([]string{
 	"该子命令支持各种单词格式转换，模式如下：",
 	"1：全部转大写",
 	"2：全部转小写",
@@ -24,7 +24,7 @@ var desc = strings.Join([]string{
 var wordCmd = &cobra.Command{
 	Use:   "word",
 	Short: "单词格式转换",
-	Long:  desc,
+	Long:  wordCmddesc,
 	Run: func(cmd *cobra.Command, args []string) {
 		var content string
 		switch mode {

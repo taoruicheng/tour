@@ -59,7 +59,7 @@ var DBTypeToStructType = map[string]string{
 }
 
 // "root:123456@tcp(127.0.0.1:3306)/test"
-const c_information_schema_connect_sql string = "%s:%s@tcp(%s)/information_schema?charset=%s&parseTime=true&loc=Local&autocommit=true"
+const c_information_schema_connect_sql string = "%s:%s@tcp(%s)/information_schema?charset=%s&parseTime=true&loc=Local&autocommit=true&timeout=5s&readTimeout=100s&writeTimeout=100s"
 
 func NewDBmodel(dbInfo *DBInfo) *DBModel {
 	return &DBModel{DBInfo: dbInfo}
@@ -78,9 +78,10 @@ func (dbModel *DBModel) Connect() error {
 		log.Fatalln("ping数据库报错", err)
 		return err
 	}
-	dbModel.DBEngine.SetConnMaxLifetime(10 * time.Second)
-	dbModel.DBEngine.SetMaxIdleConns(5)
-	dbModel.DBEngine.SetMaxOpenConns(20)
+	log.Println("数据库连接成功")
+	dbModel.DBEngine.SetConnMaxLifetime(100 * time.Second)
+	dbModel.DBEngine.SetMaxIdleConns(1)
+	dbModel.DBEngine.SetMaxOpenConns(1)
 	return nil
 }
 func (m *DBModel) GetColumns(dbName, tableName string) ([]*TableColumn, error) {
